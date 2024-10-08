@@ -9,18 +9,65 @@
             <input type="button", id="get_next_button", name="Get-Next", value="Get Next"/>
             <label id="sample_output_label"></label>
         </div>
-        <div id="draw-area">
-        </div>
+        <canvas id="draw-area"></canvas>
         <script type="module">
             import init, { ImageStepper } from "./pkg/tinywasm_playground.js"
             await init(); // must await so that the WASM file gets loaded.
 
+            const SCALE = 8; // quadruple the size of the pixels and the canvas
+
             // instantiate iterator... thing
             let image = ImageStepper.new();
+            const width = image.width();
+            const height = image.height();
+
+            const canvas = document.getElementById("draw-area");
+            canvas.width = width * SCALE;
+            canvas.height = height * SCALE;
+            const ctx = canvas.getContext("2d");
             
+            let coord = [0, 0];
             function buttonCallback() {
+                for (let idx = 0; idx < width; idx++){
                 let next_ppm = image.get_next();
                 sample_output_label.innerHTML = next_ppm;
+
+                    let hex_color = ppm_to_hex(next_ppm);
+                    drawPixel(coord[0], coord[1], hex_color);
+                    
+                    // count columns until end of line.
+                    // At end of line, increment row, reset column
+                    // continue until all rows and columns are done
+                    coord[0] += 1;
+                    if (coord[0] >= width) {
+                        coord[0] = 0;
+                        coord[1] += 1;
+                        // TODO: Detect and prevent further iteration once exhausted
+                    }
+                }
+            }
+
+            function drawPixel(x, y, color) {
+                ctx.beginPath();
+                ctx.fillStyle = color;
+                console.log(color);
+                ctx.fillRect(
+                    x * SCALE,
+                    y * SCALE,
+                    SCALE,
+                    SCALE
+                );
+                ctx.stroke();
+            }
+
+            function ppm_to_hex(ppm_string) {
+                let splitted = ppm_string.split(" ");
+                let r = splitted[0];
+                let g = splitted[1];
+                let b = splitted[2];
+
+                let hex = (r << 16 | g << 8 | b);
+                return "#"+hex.toString(16).slice(0);
             }
 
             // add callback to button so it gets the data
