@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Tiny WASM Playground</title>
+    </head>
+    <body>
+        <script type="module">
+            import init, { greet } from "./pkg/tinywasm_playground.js"
+            init().then(() => {
+                greet("Tiny WASM Playground");
+            });
+        </script>
+    </body>
+</html>
