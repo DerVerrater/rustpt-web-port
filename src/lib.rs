@@ -8,6 +8,8 @@ const PPM_DATA: &'static str = include_str!("small.ppm");
 // WASM, so I'm doing this nonsense.
 #[wasm_bindgen]
 struct ImageStepper {
+    width: u32,
+    height: u32,
     itr: std::str::Split<'static, &'static str>,
 }
 
@@ -15,18 +17,27 @@ struct ImageStepper {
 impl ImageStepper {
     pub fn new() -> Self {
         let mut itr = PPM_DATA.split("\n");
-        // skip the first 3 parts. They're metadata from the PPM file header.
+        // skip the first part. It's just the literal text "P3\n"They're metadata from the PPM file header.
         let _ = itr.next();
-        let _ = itr.next();
-        let _ = itr.next();
+        let mut size = itr.next()
+            .unwrap()
+            .split(" ");
+        let width: u32 = size.next()
+            .unwrap()
+            .parse()
+            .unwrap();
+        let height: u32  = size.next()
+            .unwrap()
+            .parse()
+            .unwrap();
 
-        ImageStepper { itr }
+        ImageStepper { width, height, itr }
     }
     
     // I know that I'm loading an 80x80 image, but the program does not.
     // Yay for magic numbers
-    pub fn width(&self) -> u32 { return 80; }
-    pub fn height(&self) -> u32 { return 80; }
+    pub fn width(&self) -> u32 { return self.width; }
+    pub fn height(&self) -> u32 { return self.height; }
     
     pub fn get_next(&mut self) -> Option<String> {
         return Some(String::from(self.itr.next()?))
