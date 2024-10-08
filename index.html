@@ -5,11 +5,26 @@
         <title>Tiny WASM Playground</title>
     </head>
     <body>
+        <div id="control-panel">
+            <input type="button", id="get_next_button", name="Get-Next", value="Get Next"/>
+            <label id="sample_output_label"></label>
+        </div>
+        <div id="draw-area">
+        </div>
         <script type="module">
-            import init, { greet } from "./pkg/tinywasm_playground.js"
-            init().then(() => {
-                greet("Tiny WASM Playground");
-            });
+            import init, { ImageStepper } from "./pkg/tinywasm_playground.js"
+            await init(); // must await so that the WASM file gets loaded.
+
+            // instantiate iterator... thing
+            let image = ImageStepper.new();
+            
+            function buttonCallback() {
+                let next_ppm = image.get_next();
+                sample_output_label.innerHTML = next_ppm;
+            }
+
+            // add callback to button so it gets the data
+            get_next_button.addEventListener('click', buttonCallback)
         </script>
     </body>
 </html>
