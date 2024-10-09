@@ -11,57 +11,11 @@
         </div>
         <canvas id="draw-area"></canvas>
         <script type="module">
-            import init, { ImageStepper } from "./pkg/tinywasm_playground.js"
+            import init, { paint_image } from "./pkg/tinywasm_playground.js"
             await init(); // must await so that the WASM file gets loaded.
 
-            const SCALE = 8; // quadruple the size of the pixels and the canvas
-
-            // instantiate iterator... thing
-            let image = ImageStepper.new();
-            const width = image.width();
-            const height = image.height();
-
-            const canvas = document.getElementById("draw-area");
-            canvas.width = width * SCALE;
-            canvas.height = height * SCALE;
-            const ctx = canvas.getContext("2d");
-            
             function buttonCallback() {
-                drawImage(image);
-            }
-
-            function drawImage(img) {
-                for (let y = 0; y < img.height(); y++) {
-                    for (let x = 0; x < img.width(); x++) {
-                        let ppm = img.get_next();
-                        if (ppm === undefined) {
-                            console.log("Oops. Got nothing out of the WASM iterator");
-                            return; // I guess I'll bail out. How do exceptions work in JS? :v
-                        };
-                        let color = ppm_to_hex(ppm);
-                        drawPixel(x, y, color);
-                    }
-                }
-            }
-
-            function drawPixel(x, y, color) {
-                ctx.fillStyle = color;
-                ctx.fillRect(
-                    x * SCALE,
-                    y * SCALE,
-                    SCALE,
-                    SCALE
-                );
-            }
-
-            function ppm_to_hex(ppm_string) {
-                let splitted = ppm_string.split(" ");
-                let r = splitted[0];
-                let g = splitted[1];
-                let b = splitted[2];
-
-                let hex = (r << 16 | g << 8 | b);
-                return "#"+hex.toString(16).slice(0);
+                paint_image("draw-area");
             }
 
             // add callback to button so it gets the data
