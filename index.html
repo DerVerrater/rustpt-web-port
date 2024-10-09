@@ -11,11 +11,13 @@
         </div>
         <canvas id="draw-area"></canvas>
         <script type="module">
-            import init, { paint_image } from "./pkg/tinywasm_playground.js"
+            import init, { Renderer } from "./pkg/tinywasm_playground.js"
             await init(); // must await so that the WASM file gets loaded.
 
+            let renderer = Renderer.new();
+
             function buttonCallback() {
-                paint_image("draw-area");
+                renderer.start("draw-area");
             }
 
             // add callback to button so it gets the data
