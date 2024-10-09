@@ -1,7 +1,46 @@
 
+extern crate console_error_panic_hook;
+use std::panic;
 
 use wasm_bindgen::{prelude::*, Clamped};
 use web_sys::ImageData;
+
+
+/*
+ * Renderer struct to represent the rendering machinery.
+ * 
+ * The JS code is meant to instantiate this, configure the render settings,
+ * and then wait for the results.
+ */
+#[wasm_bindgen]
+pub struct Renderer {}
+
+#[wasm_bindgen]
+impl Renderer {
+    pub fn new() -> Self {
+        console_error_panic_hook::set_once();
+        Self {}
+    }
+
+    pub fn start() {
+        todo!();
+    }
+
+    pub fn stop() {
+        todo!();
+    }
+
+    pub fn is_ready() -> bool {
+        todo!();
+    }
+}
+
+impl Renderer {
+    // main rendering loop.
+    fn gogo() {
+        todo!();
+    }
+}
 
 const PPM_DATA: &'static str = include_str!("small.ppm");
 
