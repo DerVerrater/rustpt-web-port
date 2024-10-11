@@ -6,8 +6,16 @@
     </head>
     <body>
         <div id="control-panel">
-            <input type="button", id="get_next_button", name="Get-Next", value="Get Next"/>
-            <label id="sample_output_label"></label>
+            <label>Rendering Settings</label>
+            <label>Width:</label>
+            <input type="number", value="60", min="0", max="1920"/>
+            <label>Height:</label>
+            <input type="number", value="40", min="0", max="1080"/>
+            <label>Samples Per Pixel</label>
+            <input type="number", value="10", min="1", max="50"/>
+            <label>Bounce Depth</label>
+            <input type="number", value="50", min="1", max="250"/>
+            <input type="button", id="start_render_button", name="Get-Next", value="Start Render"/>
         </div>
         <canvas id="draw-area"></canvas>
         <script type="module">
@@ -16,12 +24,12 @@
 
             let renderer = Renderer.new();
 
-            function buttonCallback() {
+            async function buttonCallback() {
                 renderer.start("draw-area");
             }
 
             // add callback to button so it gets the data
-            get_next_button.addEventListener('click', buttonCallback)
+            start_render_button.addEventListener('click', buttonCallback)
         </script>
     </body>
 </html>
