@@ -1,10 +1,11 @@
 [package]
-name = "tinywasm-playground"
+name = "rustpt-web-port"
 version = "0.1.0"
 edition = "2021"
 authors = ["Robert Garrett <robertgarrett404@gmail.com"]
 description = "A dummy project for learning to do WASM things with Rust"
 license = "MIT/Apache-2.0"
+repository = "https://github.com/DerVerrater/rustpt-web-port"
 
 [lib]
 crate-type = ["cdylib"]
